@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+/* Create new node */
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+/* Insert at tail */
+void insertAtTail(Node** head, int data) {
+    Node* newNode = createNode(data);
+
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+
+    Node* temp = *head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+}
+
+/* Get length of list */
+int getLength(Node* head) {
+    int count = 0;
+    while (head != NULL) {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+/* Find intersection node */
+Node* findIntersection(Node* head1, Node* head2) {
+    int len1 = getLength(head1);
+    int len2 = getLength(head2);
+
+    int diff = abs(len1 - len2);
+
+    Node* ptr1 = head1;
+    Node* ptr2 = head2;
+
+    // Move pointer of longer list
+    if (len1 > len2) {
+        for (int i = 0; i < diff; i++)
+            ptr1 = ptr1->next;
+    } else {
+        for (int i = 0; i < diff; i++)
+            ptr2 = ptr2->next;
+    }
+
+    // Traverse together
+    while (ptr1 != NULL && ptr2 != NULL) {
+        if (ptr1 == ptr2)
+            return ptr1;
+
+        ptr1 = ptr1->next;
+        ptr2 = ptr2->next;
+    }
+
+    return NULL;
+}
+
+int main() {
+    Node* head1 = NULL;
+    Node* head2 = NULL;
+
+    int n, m, value;
+
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &value);
+        insertAtTail(&head1, value);
+    }
+
+    scanf("%d", &m);
+
+    int* arr = (int*)malloc(m * sizeof(int));
+    for (int i = 0; i < m; i++)
+        scanf("%d", &arr[i]);
+
+    // Build second list
+    for (int i = 0; i < m; i++) {
+        Node* temp = head1;
+
+        // If value exists in first list → connect (create intersection)
+        while (temp != NULL) {
+            if (temp->data == arr[i]) {
+                head2 = createNode(arr[0]);
+                Node* curr = head2;
+
+                for (int j = 1; j < i; j++) {
+                    curr->next = createNode(arr[j]);
+                    curr = curr->next;
+                }
+
+                curr->next = temp; // connect intersection
+                goto done;
+            }
+            temp = temp->next;
+        }
+    }
+
+    done:
+
+    Node* intersection = findIntersection(head1, head2);
+
+    if (intersection != NULL)
+        printf("%d\n", intersection->data);
+    else
+        printf("No Intersection\n");
+
+    return 0;
+}
