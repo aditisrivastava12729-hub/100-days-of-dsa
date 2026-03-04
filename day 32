@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+#define STACK_SIZE 100
+
+int main() {
+    int n, i;
+    int stack[STACK_SIZE];
+    int top = -1;
+    
+    // Read number of elements
+    scanf("%d", &n);
+    
+    // Push elements
+    for(i = 0; i < n; i++) {
+        int value;
+        scanf("%d", &value);
+        stack[++top] = value;
+    }
+    
+    // Number of pop operations
+    int popCount;
+    scanf("%d", &popCount);
+    
+    // Perform pop operations
+    for(i = 0; i < popCount; i++) {
+        if(top >= 0)
+            top--;
+    }
+    
+    // Display remaining elements (top to bottom)
+    for(i = top; i >= 0; i--) {
+        printf("%d ", stack[i]);
+    }
+    
+    return 0;
+}
