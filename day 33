@@ -1,0 +1,33 @@
+def precedence(op):
+    if op == '+' or op == '-':
+        return 1
+    if op == '*' or op == '/':
+        return 2
+    if op == '^':
+        return 3
+    return 0
+
+def infix_to_postfix(exp):
+    stack = []
+    postfix = ""
+
+    for ch in exp:
+
+        # if operand
+        if ch.isalnum():
+            postfix += ch
+
+        # if operator
+        else:
+            while stack and precedence(stack[-1]) >= precedence(ch):
+                postfix += stack.pop()
+            stack.append(ch)
+
+    while stack:
+        postfix += stack.pop()
+
+    return postfix
+
+
+exp = input("Enter infix expression: ")
+print("Postfix expression:", infix_to_postfix(exp))
