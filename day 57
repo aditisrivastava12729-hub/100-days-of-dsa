@@ -1,0 +1,50 @@
+from collections import deque
+
+# Tree node definition
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+# Build tree from level-order input
+def buildTree(vals):
+    if not vals or vals[0] == -1:
+        return None
+    root = TreeNode(vals[0])
+    q = deque([root])
+    i = 1
+    while q and i < len(vals):
+        node = q.popleft()
+        if vals[i] != -1:
+            node.left = TreeNode(vals[i])
+            q.append(node.left)
+        i += 1
+        if i < len(vals) and vals[i] != -1:
+            node.right = TreeNode(vals[i])
+            q.append(node.right)
+        i += 1
+    return root
+
+# Mirror the binary tree
+def mirrorTree(root):
+    if root is None:
+        return None
+    root.left, root.right = root.right, root.left
+    mirrorTree(root.left)
+    mirrorTree(root.right)
+    return root
+
+# Inorder traversal
+def inorder(root):
+    if root is None:
+        return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
+
+# Main DSA function
+if __name__ == "__main__":
+    n = int(input())
+    vals = list(map(int, input().split()))
+    root = buildTree(vals)
+    mirrorTree(root)
+    print(*inorder(root))
