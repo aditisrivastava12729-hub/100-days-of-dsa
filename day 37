@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class PriorityQueue {
+public:
+    vector<int> arr;
+
+    // Insert
+    void insert(int x) {
+        arr.push_back(x);
+    }
+
+    // Delete (remove min element)
+    int deleteElement() {
+        if (arr.empty()) return -1;
+
+        int minIndex = 0;
+        for (int i = 1; i < arr.size(); i++) {
+            if (arr[i] < arr[minIndex]) {
+                minIndex = i;
+            }
+        }
+
+        int val = arr[minIndex];
+        arr.erase(arr.begin() + minIndex);
+        return val;
+    }
+
+    // Peek (get min element)
+    int peek() {
+        if (arr.empty()) return -1;
+
+        int minVal = arr[0];
+        for (int i = 1; i < arr.size(); i++) {
+            minVal = min(minVal, arr[i]);
+        }
+        return minVal;
+    }
+};
+
+int main() {
+    int N;
+    cin >> N;
+
+    PriorityQueue pq;
+
+    while (N--) {
+        string op;
+        cin >> op;
+
+        if (op == "insert") {
+            int x;
+            cin >> x;
+            pq.insert(x);
+        }
+        else if (op == "delete") {
+            cout << pq.deleteElement() << endl;
+        }
+        else if (op == "peek") {
+            cout << pq.peek() << endl;
+        }
+    }
+
+    return 0;
+}
