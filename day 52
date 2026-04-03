@@ -1,0 +1,20 @@
+class Solution {
+public:
+    TreeNode* findLCA(TreeNode* root, int p, int q) {
+        if (root == NULL) return NULL;
+
+        // if current node is one of p or q
+        if (root->val == p || root->val == q) {
+            return root;
+        }
+
+        TreeNode* left = findLCA(root->left, p, q);
+        TreeNode* right = findLCA(root->right, p, q);
+
+        // if both sides returned non-null → this is LCA
+        if (left && right) return root;
+
+        // otherwise return non-null child
+        return (left != NULL) ? left : right;
+    }
+};
