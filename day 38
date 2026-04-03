@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    deque<int> dq;
+
+    // push operations
+    dq.push_back(10);
+    dq.push_front(5);
+    dq.push_back(20);
+
+    cout << "Deque after push operations: ";
+    for (int x : dq) cout << x << " ";
+    cout << endl;
+
+    // front & back
+    cout << "Front: " << dq.front() << endl;
+    cout << "Back: " << dq.back() << endl;
+
+    // pop operations
+    dq.pop_front();
+    dq.pop_back();
+
+    cout << "Deque after pop operations: ";
+    for (int x : dq) cout << x << " ";
+    cout << endl;
+
+    // size & empty
+    cout << "Size: " << dq.size() << endl;
+    cout << "Is Empty: " << (dq.empty() ? "Yes" : "No") << endl;
+
+    // additional operations
+    dq.push_back(15);
+    dq.push_back(25);
+    dq.push_back(35);
+
+    // reverse
+    reverse(dq.begin(), dq.end());
+
+    cout << "After reverse: ";
+    for (int x : dq) cout << x << " ";
+    cout << endl;
+
+    // sort
+    sort(dq.begin(), dq.end());
+
+    cout << "After sort: ";
+    for (int x : dq) cout << x << " ";
+    cout << endl;
+
+    // clear
+    dq.clear();
+    cout << "After clear, is empty: " << (dq.empty() ? "Yes" : "No") << endl;
+
+    return 0;
+}
