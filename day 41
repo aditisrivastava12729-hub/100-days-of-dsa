@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Node structure
+struct Node {
+    int data;
+    Node* next;
+    
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+class Queue {
+public:
+    Node* front;
+    Node* rear;
+
+    Queue() {
+        front = rear = NULL;
+    }
+
+    // Enqueue
+    void enqueue(int x) {
+        Node* temp = new Node(x);
+
+        if (rear == NULL) {
+            front = rear = temp;
+            return;
+        }
+
+        rear->next = temp;
+        rear = temp;
+    }
+
+    // Dequeue
+    int dequeue() {
+        if (front == NULL) return -1;
+
+        int val = front->data;
+        Node* temp = front;
+        front = front->next;
+
+        if (front == NULL) {
+            rear = NULL;
+        }
+
+        delete temp;
+        return val;
+    }
+};
+
+int main() {
+    int N;
+    cin >> N;
+
+    Queue q;
+
+    while (N--) {
+        string op;
+        cin >> op;
+
+        if (op == "enqueue") {
+            int x;
+            cin >> x;
+            q.enqueue(x);
+        }
+        else if (op == "dequeue") {
+            cout << q.dequeue() << endl;
+        }
+    }
+
+    return 0;
+}
