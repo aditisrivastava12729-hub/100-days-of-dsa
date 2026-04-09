@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+int graph[MAX][MAX];
+bool visited[MAX];
+int stack[MAX];
+int top = -1;
+int n;
+
+// Push into stack
+void push(int node) {
+    stack[++top] = node;
+}
+
+// DFS function
+void dfs(int node) {
+    visited[node] = true;
+
+    for (int i = 0; i < n; i++) {
+        if (graph[node][i] && !visited[i]) {
+            dfs(i);
+        }
+    }
+
+    push(node); // push after visiting all neighbors
+}
+
+// Topological sort
+void topoSort() {
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            dfs(i);
+        }
+    }
+
+    // Print stack (reverse order)
+    while (top != -1) {
+        printf("%d ", stack[top--]);
+    }
+}
+
+int main() {
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+
+    printf("Enter adjacency matrix:\n");
+    for (int i = 0; i < n; i++) {
+        visited[i] = false;
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    printf("Topological Ordering:\n");
+    topoSort();
+
+    return 0;
+}
