@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    void dfs(int node, vector<vector<int>>& adj, vector<int>& visited) {
+        visited[node] = 1;
+
+        for (auto neighbor : adj[node]) {
+            if (!visited[neighbor]) {
+                dfs(neighbor, adj, visited);
+            }
+        }
+    }
+
+    string isConnected(int n, vector<pair<int,int>>& edges) {
+        vector<vector<int>> adj(n + 1);
+        vector<int> visited(n + 1, 0);
+
+        // Build graph
+        for (auto &e : edges) {
+            adj[e.first].push_back(e.second);
+            adj[e.second].push_back(e.first);
+        }
+
+        // Start DFS from node 1
+        dfs(1, adj, visited);
+
+        // Check if all nodes are visited
+        for (int i = 1; i <= n; i++) {
+            if (!visited[i]) {
+                return "NOT CONNECTED";
+            }
+        }
+
+        return "CONNECTED";
+    }
+};
+
+int main() {
+    int n = 4;
+    vector<pair<int,int>> edges = {{1,2},{3,4}};
+
+    Solution obj;
+    cout << obj.isConnected(n, edges);
+}
