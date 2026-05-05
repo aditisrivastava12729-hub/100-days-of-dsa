@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    float data;
+    struct Node* next;
+} Node;
+
+void insertSorted(Node** bucket, float value) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (*bucket == NULL || (*bucket)->data >= value) {
+        newNode->next = *bucket;
+        *bucket = newNode;
+        return;
+    }
+
+    Node* temp = *bucket;
+    while (temp->next != NULL && temp->next->data < value) {
+        temp = temp->next;
+    }
+
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+
+void bucketSort(float arr[], int n) {
+    Node* buckets[n];
+
+    for (int i = 0; i < n; i++) {
+        buckets[i] = NULL;
+    }
+
+    // Distribute elements into buckets
+    for (int i = 0; i < n; i++) {
+        int index = arr[i] * n;
+        insertSorted(&buckets[index], arr[i]);
+    }
+
+    // Concatenate buckets
+    int k = 0;
+    for (int i = 0; i < n; i++) {
+        Node* temp = buckets[i];
+
+        while (temp != NULL) {
+            arr[k++] = temp->data;
+
+            Node* del = temp;
+            temp = temp->next;
+            free(del);
+        }
+    }
+}
+
+int main() {
+    float arr[] = {0.78, 0.17, 0.39, 0.26, 0.72, 0.94, 0.21, 0.12, 0.23, 0.68};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    bucketSort(arr, n);
+
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%.2f ", arr[i]);
+    }
+
+    return 0;
+}
