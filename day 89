@@ -1,0 +1,59 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool canAllocate(vector<int>& pages, int n, int m, int maxPages) {
+    int students = 1;
+    int currentPages = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (pages[i] > maxPages) return false;
+
+        if (currentPages + pages[i] <= maxPages) {
+            currentPages += pages[i];
+        } else {
+            students++;
+            currentPages = pages[i];
+        }
+    }
+
+    return students <= m;
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> pages(n);
+    int sum = 0, maxBook = 0;
+
+    for (int i = 0; i < n; i++) {
+        cin >> pages[i];
+        sum += pages[i];
+        maxBook = max(maxBook, pages[i]);
+    }
+
+    if (m > n) {
+        cout << -1;
+        return 0;
+    }
+
+    int low = maxBook;
+    int high = sum;
+    int ans = -1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (canAllocate(pages, n, m, mid)) {
+            ans = mid;
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    cout << ans;
+
+    return 0;
+}
