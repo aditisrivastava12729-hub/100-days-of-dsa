@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int minMeetingRooms(vector<vector<int>>& intervals) {
+        if (intervals.empty()) return 0;
+
+        // Sort meetings by start time
+        sort(intervals.begin(), intervals.end());
+
+        // Min-heap stores end times
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+
+        for (auto meeting : intervals) {
+            int start = meeting[0];
+            int end = meeting[1];
+
+            // If earliest room is free, reuse it
+            if (!minHeap.empty() && minHeap.top() <= start) {
+                minHeap.pop();
+            }
+
+            // Add current meeting end time
+            minHeap.push(end);
+        }
+
+        return minHeap.size();
+    }
+};
